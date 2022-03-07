@@ -10,7 +10,7 @@ export const CurrentUser = createParamDecorator(
 );
 
 export type UserLogin = {
-  id: number;
+  id: string;
   username: string;
   role: Role
 };

@@ -10,6 +10,8 @@ import { join } from 'path';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { RolesGuard } from './auth/roles.guard';
+import { LocationModule } from './location/location.module';
+import { FoodItemModule } from './food-item/food-item.module';
 
 
 @Module({
@@ -24,6 +26,8 @@ import { RolesGuard } from './auth/roles.guard';
     }),
     UserModule,
     AuthModule,
+    LocationModule,
+    FoodItemModule,
 
   ],
   controllers: [AppController],

@@ -22,8 +22,8 @@ model User {
   isActive      Boolean        @default(true)
   createdAt     DateTime       @default(now())
   updatedAt     DateTime?      @updatedAt
-  createdBy     Int?
-  updatedBy     Int?
+  createdBy     String?
+  updatedBy     String?
   notifications Notification[]
 
 }
@@ -36,10 +36,33 @@ model Notification {
   isActive  Boolean   @default(true)
   createdAt DateTime  @default(now())
   updatedAt DateTime? @updatedAt
-  createdBy Int?
-  updatedBy Int?
+  createdBy String?
+  updatedBy String?
 
-  User User @relation(fields: [userId], references: [id])
+  createdByUser User @relation(fields: [userId], references: [id])
+}
+
+model Location {
+  id        String     @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime   @default(now())
+  updatedAt DateTime?  @updatedAt
+  createdBy String?
+  updatedBy String?
+  name      String
+  foodItems FoodItem[]
+}
+
+model FoodItem {
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime? @updatedAt
+  createdBy  String?
+  updatedBy  String?
+  name       String
+  locationId String
+  dateEnd    DateTime?
+  duration   Int?
+  location   Location  @relation(fields: [locationId], references: [id])
 }
 
 enum Role {
