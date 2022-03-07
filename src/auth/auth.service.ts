@@ -28,7 +28,6 @@ export class AuthService {
             role: user.role
         };
         const update = await this.userService.update(user.id, {
-            id: user.id,
             accessToken: payload.token
         });
         return {

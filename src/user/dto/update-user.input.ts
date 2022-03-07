@@ -3,8 +3,8 @@ import { InputType, Field, Int, PartialType, OmitType } from '@nestjs/graphql';
 
 @InputType()
 export class UpdateUserInput extends OmitType(CreateUserInput, []) {
-  @Field(() => Int)
-  id: number;
+  @Field(() => String, { nullable: true })
+  id?: string;
 
   @Field(() => String)
   accessToken?: string

@@ -3,8 +3,8 @@ import { Role } from '@prisma/client';
 
 @ObjectType()
 export class User {
-  @Field(() => Int)
-  id: number;
+  @Field(() => String)
+  id: String;
 
   @Field(() => String)
   username: String;

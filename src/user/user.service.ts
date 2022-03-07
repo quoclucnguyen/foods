@@ -30,15 +30,15 @@ export class UserService {
     return this.prismaAppService.prismaService.user.findMany();
   }
 
-  findOne(id: number) {
+  findOne(id: string) {
     return this.prismaAppService.prismaService.user.findFirst({
       where: {
-        id: id
+        id: id.toString()
       }
     })
   }
 
-  update(id: number, updateUserInput: UpdateUserInput) {
+  update(id: string, updateUserInput: UpdateUserInput) {
     return this.prismaAppService.prismaService.user.update({
       where: {
         id: id

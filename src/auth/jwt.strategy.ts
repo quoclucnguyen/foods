@@ -29,6 +29,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 }
 
 type Payload = {
-  id: number;
+  id: string;
   token: string
 };
