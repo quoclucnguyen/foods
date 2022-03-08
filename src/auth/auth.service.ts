@@ -9,9 +9,10 @@ import { reduceEachTrailingCommentRange } from 'typescript';
 @Injectable()
 export class AuthService {
     constructor(
-        private readonly userService: UserService,
-        private jwtService: JwtService
-    ) { }
+      private readonly userService: UserService,
+      private jwtService: JwtService,
+    ) {
+    }
 
     async validateUser(username: any, password: any, type: any) {
         const user = await this.userService.findByUsername(username);
@@ -20,30 +21,31 @@ export class AuthService {
         }
         return null;
     }
+
     async login(user: any, body: any) {
         const payload = {
             username: user.username,
             id: user.id,
             token: randomUUID(),
-            role: user.role
+            role: user.role,
         };
         const update = await this.userService.update(user.id, {
-            accessToken: payload.token
+            accessToken: payload.token,
         });
         return {
             id: update.id,
             accessToken: this.jwtService.sign(payload),
             username: update.username,
-            role: update.role
-        }
+            role: update.role,
+        };
 
     }
 
     async logout(user: any) {
         const update = this.userService.update(user.id, {
             id: user.id,
-            accessToken: null
+            accessToken: null,
         });
-        return { logout: true }
+        return { logout: true };
     }
 }

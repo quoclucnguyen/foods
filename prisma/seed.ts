@@ -19,7 +19,23 @@ async function main() {
             role: Role.ADMIN,
         }
     })
+    const user = await prisma.user.upsert({
+        where: {
+            username: "user"
+        },
+        update: {
+            password: bcrypt.hashSync("123456", 10),
+        },
+        create: {
+            name: "User",
+            email: "user@nnu.com",
+            username: "user",
+            password: bcrypt.hashSync("123456", 10),
+            role: Role.USER,
+        }
+    })
 }
+
 
 main()
     .catch((e) => {

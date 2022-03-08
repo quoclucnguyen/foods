@@ -10,35 +10,37 @@ import { CurrentUser, UserLogin } from 'src/auth/current-user.decotator';
 
 @Resolver(() => FoodItem)
 export class FoodItemResolver {
-  constructor(private readonly foodItemService: FoodItemService) { }
+    constructor(private readonly foodItemService: FoodItemService) {
+    }
 
-  @UseGuards(GqlAuthGuard)
-  @Mutation(() => FoodItem)
-  createFoodItem(
-    @Args('createFoodItemInput') createFoodItemInput: CreateFoodItemInput,
-    @CurrentUser() user: UserLogin,
-  ) {
-    createFoodItemInput.createdBy = user.id;
-    return this.foodItemService.create(createFoodItemInput);
-  }
+    @UseGuards(GqlAuthGuard)
+    @Mutation(() => FoodItem)
+    createFoodItem(
+      @Args('createFoodItemInput') createFoodItemInput: CreateFoodItemInput,
+      @CurrentUser() user: UserLogin,
+    ) {
+        createFoodItemInput.createdBy = user.id;
+        return this.foodItemService.create(createFoodItemInput);
+    }
 
-  @Query(() => [FoodItem], { name: 'foodItems' })
-  findAll() {
-    return this.foodItemService.findAll();
-  }
+    @Query(() => [FoodItem], { name: 'foodItems' })
+    findAll() {
+        return this.foodItemService.findAll();
+    }
 
-  @Query(() => FoodItem, { name: 'foodItem' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
-    return this.foodItemService.findOne(id);
-  }
+    @Query(() => FoodItem, { name: 'foodItem' })
+    findOne(@Args('id', { type: () => String }) id: string) {
+        return this.foodItemService.findOne(id);
+    }
 
-  @Mutation(() => FoodItem)
-  updateFoodItem(@Args('updateFoodItemInput') updateFoodItemInput: UpdateFoodItemInput) {
-    return this.foodItemService.update(updateFoodItemInput.id, updateFoodItemInput);
-  }
+    @Mutation(() => FoodItem)
+    updateFoodItem(@Args('updateFoodItemInput') updateFoodItemInput: UpdateFoodItemInput) {
 
-  @Mutation(() => FoodItem)
-  removeFoodItem(@Args('id', { type: () => Int }) id: number) {
-    return this.foodItemService.remove(id);
-  }
+        return this.foodItemService.update(updateFoodItemInput.id, updateFoodItemInput);
+    }
+
+    @Mutation(() => FoodItem)
+    removeFoodItem(@Args('id', { type: () => Int }) id: number) {
+        return this.foodItemService.remove(id);
+    }
 }

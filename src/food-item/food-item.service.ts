@@ -5,35 +5,51 @@ import { UpdateFoodItemInput } from './dto/update-food-item.input';
 
 @Injectable()
 export class FoodItemService {
-  constructor(
-    private readonly prismaAppService: PrismaAppService,
-  ) { }
-  create(createFoodItemInput: CreateFoodItemInput) {
-    return this.prismaAppService.prismaService.foodItem.create({
-      data: createFoodItemInput
-    })
-  }
+    constructor(
+      private readonly prismaAppService: PrismaAppService,
+    ) {
+    }
 
-  async findAll() {
-    const items = await this.prismaAppService.prismaService.foodItem.findMany({
-      include: {
-        location: true
-      }
-    })
-    console.log(items);
-    return items;
+    create(createFoodItemInput: CreateFoodItemInput) {
+        return this.prismaAppService.prismaService.foodItem.create({
+            data: createFoodItemInput,
+        });
+    }
 
-  }
+    async findAll() {
+        return this.prismaAppService.prismaService.foodItem.findMany({
+            include: {
+                location: true,
+            },
+            where: {
+                isActive: true,
+            },
+        });
 
-  findOne(id: number) {
-    return `This action returns a #${id} foodItem`;
-  }
+    }
 
-  update(id: number, updateFoodItemInput: UpdateFoodItemInput) {
-    return `This action updates a #${id} foodItem`;
-  }
+    findOne(id: string) {
+        return this.prismaAppService.prismaService.foodItem.findFirst({
+            where: {
+                id,
+            },
+            include: {
+                location: true,
+            },
+        });
+    }
 
-  remove(id: number) {
-    return `This action removes a #${id} foodItem`;
-  }
+    update(id: string, updateFoodItemInput: UpdateFoodItemInput) {
+        delete updateFoodItemInput?.id;
+        return this.prismaAppService.prismaService.foodItem.update({
+            where: {
+                id: id,
+            },
+            data: updateFoodItemInput,
+        });
+    }
+
+    remove(id: number) {
+        return `This action removes a #${id} foodItem`;
+    }
 }

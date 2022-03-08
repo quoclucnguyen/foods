@@ -6,29 +6,29 @@ import { UserService } from 'src/user/user.service';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-  protected readonly logger = new Logger();
+    protected readonly logger = new Logger();
 
-  constructor(
-    private userService: UserService
-  ) {
-    super({
-      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      ignoreExpiration: false,
-      secretOrKey: 'SECRET_KEY_IN_HERE_WILL_BE_REPEATED_IN_PRODUCTION_WITH_CONFIG_SERVICE',
-    });
+    constructor(
+      private userService: UserService,
+    ) {
+        super({
+            jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+            ignoreExpiration: false,
+            secretOrKey: 'SECRET_KEY_IN_HERE_WILL_BE_REPEATED_IN_PRODUCTION_WITH_CONFIG_SERVICE',
+        });
 
-  }
-
-  async validate(payload: Payload) {
-    const user = await this.userService.findOne(payload.id);
-    if (user) {
-      return user;
     }
-    return new UnauthorizedException();
-  }
+
+    async validate(payload: Payload) {
+        const user = await this.userService.findOne(payload.id);
+        if (user) {
+            return user;
+        }
+        return new UnauthorizedException();
+    }
 }
 
 type Payload = {
-  id: string;
-  token: string
+    id: string;
+    token: string
 };

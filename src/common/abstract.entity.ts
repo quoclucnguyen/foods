@@ -1,4 +1,4 @@
-import { Field, ObjectType } from "@nestjs/graphql";
+import { Field, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 export class AbstractEntity {
@@ -16,4 +16,7 @@ export class AbstractEntity {
 
     @Field(() => Date, { nullable: true })
     updatedAt?: Date;
+
+    @Field(() => Boolean, { defaultValue: true })
+    isActive: boolean;
 }

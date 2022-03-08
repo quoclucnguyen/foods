@@ -4,7 +4,9 @@ import { FoodItemResolver } from './food-item.resolver';
 import { PrismaModule } from 'src/prisma/prisma.module';
 
 @Module({
-  imports: [PrismaModule],
-  providers: [FoodItemResolver, FoodItemService]
+    imports: [PrismaModule],
+    providers: [FoodItemResolver, FoodItemService],
+    exports: [FoodItemService],
 })
-export class FoodItemModule { }
+export class FoodItemModule {
+}

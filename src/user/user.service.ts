@@ -7,56 +7,60 @@ import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import * as bcrypt from 'bcrypt';
 import { PrismaAppService } from 'src/prisma/prisma.app.service';
+import { equals } from 'class-validator';
 
 @Injectable()
 export class UserService {
-  constructor(private readonly prismaAppService: PrismaAppService) { }
+    constructor(private readonly prismaAppService: PrismaAppService) {
+    }
 
 
-  create(createUserInput: CreateUserInput) {
-    const passwordHash = bcrypt.hashSync(createUserInput.password, 10);
-    return this.prismaAppService.prismaService.user.create({
-      data: {
-        username: createUserInput.username,
-        name: createUserInput.name,
-        email: createUserInput.email,
-        password: passwordHash,
-        role: createUserInput.role
-      }
-    })
-  }
+    create(createUserInput: CreateUserInput) {
+        const passwordHash = bcrypt.hashSync(createUserInput.password, 10);
+        return this.prismaAppService.prismaService.user.create({
+            data: {
+                username: createUserInput.username,
+                name: createUserInput.name,
+                email: createUserInput.email,
+                password: passwordHash,
+                role: createUserInput.role,
+            },
+        });
+    }
 
-  findAll() {
-    return this.prismaAppService.prismaService.user.findMany();
-  }
+    findAll() {
+        return this.prismaAppService.prismaService.user.findMany();
+    }
 
-  findOne(id: string) {
-    return this.prismaAppService.prismaService.user.findFirst({
-      where: {
-        id: id.toString()
-      }
-    })
-  }
+    findOne(id: string) {
+        return this.prismaAppService.prismaService.user.findFirst({
+            where: {
+                id: {
+                    equals: id,
+                },
+            },
+        });
+    }
 
-  update(id: string, updateUserInput: UpdateUserInput) {
-    return this.prismaAppService.prismaService.user.update({
-      where: {
-        id: id
-      },
-      data: updateUserInput
-    })
-  }
+    update(id: string, updateUserInput: UpdateUserInput) {
+        return this.prismaAppService.prismaService.user.update({
+            where: {
+                id: id,
+            },
+            data: updateUserInput,
+        });
+    }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
-  }
+    remove(id: number) {
+        return `This action removes a #${id} user`;
+    }
 
-  findByUsername(username: string) {
-    return this.prismaAppService.prismaService.user.findFirst({
-      where: {
-        username: username,
-        isActive: true
-      }
-    })
-  }
+    findByUsername(username: string) {
+        return this.prismaAppService.prismaService.user.findFirst({
+            where: {
+                username: username,
+                isActive: true,
+            },
+        });
+    }
 }

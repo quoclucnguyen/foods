@@ -3,6 +3,9 @@ import { InputType, Field, Int, PartialType } from '@nestjs/graphql';
 
 @InputType()
 export class UpdateFoodItemInput extends PartialType(CreateFoodItemInput) {
-  @Field(() => Int)
-  id: number;
+    @Field(() => String, { nullable: true })
+    id: string;
+
+    @Field(() => Boolean, { nullable: true })
+    isActive: boolean;
 }
