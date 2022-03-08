@@ -6,7 +6,7 @@ import { UpdateNotificationInput } from './dto/update-notification.input';
 @Injectable()
 export class NotificationService {
   constructor(
-    private readonly prismaAppService: PrismaAppService
+      readonly prismaAppService: PrismaAppService
   ) { }
   create(createNotificationInput: CreateNotificationInput) {
     return this.prismaAppService.prismaService.notification.create({

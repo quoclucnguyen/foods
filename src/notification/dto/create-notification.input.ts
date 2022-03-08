@@ -14,4 +14,7 @@ export class CreateNotificationInput {
   @Field(() => String, { nullable: true })
   createdBy?: string;
 
+  @Field(() => String, { nullable: true })
+  foodItemId?: string
+
 }
