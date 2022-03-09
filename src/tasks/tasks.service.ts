@@ -1,6 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
 import { NotificationService } from 'src/notification/notification.service';
+import { PrismaAppService } from 'src/prisma/prisma.app.service';
 import { FoodItemService } from '../food-item/food-item.service';
 
 @Injectable()
@@ -9,7 +10,8 @@ export class TasksService {
 
     constructor(
         private readonly foodItemService: FoodItemService,
-        private readonly notificationService: NotificationService
+        private readonly notificationService: NotificationService,
+        private readonly prismaAppService: PrismaAppService
     ) {
     }
 
@@ -18,7 +20,15 @@ export class TasksService {
     async foodCheckDate() {
         const date = new Date();
         this.logger.debug('Food check date cron job begin');
-        const foodItems = await this.foodItemService.findAll();
+        const foodItems = await this.prismaAppService.prismaService.foodItem.findMany({
+            where: {
+                isSendNotification: false,
+                isActive: true
+            },
+            take: 10,// TODO: Change by config service or env !!
+            
+
+        })
 
         for (const foodItem of foodItems) {
 

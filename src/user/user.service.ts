@@ -24,6 +24,7 @@ export class UserService {
                 email: createUserInput.email,
                 password: passwordHash,
                 role: createUserInput.role,
+                accessToken: bcrypt.hashSync(createUserInput.username, 10),
             },
         });
     }
