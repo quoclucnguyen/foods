@@ -1,4 +1,4 @@
-import { Field, ObjectType } from '@nestjs/graphql';
+import { Field, InputType, Int, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 export class AbstractEntity {
@@ -19,4 +19,22 @@ export class AbstractEntity {
 
     @Field(() => Boolean, { defaultValue: true })
     isActive: boolean;
+}
+
+@InputType()
+export class Pagination {
+    @Field(() => Int, { nullable: true })
+    take: 10;
+
+    @Field(() => Int, { nullable: true })
+    skip: 0;
+}
+
+@ObjectType()
+export abstract class QueryResult {
+    @Field(() => Int)
+    total: number;
+
+    @Field(() => [AbstractEntity])
+    items: AbstractEntity[];
 }

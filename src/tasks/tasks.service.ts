@@ -36,7 +36,7 @@ export class TasksService {
                 this.logger.debug(`Food item "${foodItem.name}" expired`);
                 const notification = await this.notificationService.prismaAppService.prismaService.notification.findFirst({
                     where: {
-                        foodItemId: foodItem.id
+                        // foodItemId: foodItem.id
                     }
                 });
                 if (!notification) {
