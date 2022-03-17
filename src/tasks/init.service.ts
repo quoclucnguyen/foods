@@ -9,7 +9,7 @@ export class InitService {
     constructor(
         private readonly prismaAppService: PrismaAppService
     ) { }
-    @Cron('30 * * * * *')
+    // @Cron('30 * * * * *')
     async initData() {
         this.logger.debug('Init data cron job begin');
         const date = new Date()

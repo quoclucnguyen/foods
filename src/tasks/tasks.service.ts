@@ -16,7 +16,7 @@ export class TasksService {
     }
 
 
-    @Cron('0 * * * * *')
+    // @Cron('0 * * * * *')
     async foodCheckDate() {
         const date = new Date();
         this.logger.debug('Food check date cron job begin');
