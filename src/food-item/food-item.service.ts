@@ -22,7 +22,9 @@ export class FoodItemService {
 
     async findAll(pagination: FoodItemPagination, user?: UserLogin) {
 
-        const filter: any = {};
+        const filter: any = {
+            isActive: true
+        };
         if (pagination?.where?.name) {
             filter.name = {
                 contains: pagination?.where?.name
@@ -65,6 +67,18 @@ export class FoodItemService {
 
     update(id: string, updateFoodItemInput: UpdateFoodItemInput) {
         delete updateFoodItemInput?.id;
+        for (const key in updateFoodItemInput) {
+            if (!updateFoodItemInput[key]) {
+                delete updateFoodItemInput[key];
+            }
+        }
+        if (Object.keys(updateFoodItemInput).length === 0) {
+            return this.prismaAppService.prismaService.foodItem.findFirst({
+                where: {
+                    id: id
+                }
+            })
+        }
         return this.prismaAppService.prismaService.foodItem.update({
             where: {
                 id: id,
@@ -73,7 +87,14 @@ export class FoodItemService {
         });
     }
 
-    remove(id: number) {
-        return `This action removes a #${id} foodItem`;
+    remove(id: string) {
+        return this.prismaAppService.prismaService.foodItem.update({
+            where: {
+                id: id
+            },
+            data: {
+                isActive: false
+            }
+        })
     }
 }

@@ -32,6 +32,11 @@ enum Role {
   USER
 }
 
+enum Status {
+  NEW
+  EATEN
+}
+
 model Notification {
   id         String    @id @default(auto()) @map("_id") @db.ObjectId
   userId     String
@@ -65,6 +70,7 @@ model FoodItem {
   createdBy          String?
   updatedBy          String?
   isActive           Boolean   @default(true)
+  status             Status?   @default(NEW)
   name               String
   locationId         String
   dateEnd            DateTime?

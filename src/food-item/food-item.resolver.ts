@@ -44,7 +44,7 @@ export class FoodItemResolver {
     }
 
     @Mutation(() => FoodItem)
-    removeFoodItem(@Args('id', { type: () => Int }) id: number) {
+    removeFoodItem(@Args('id', { type: () => String }) id: string) {
         return this.foodItemService.remove(id);
     }
 }

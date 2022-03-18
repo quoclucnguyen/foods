@@ -19,6 +19,9 @@ export class AbstractEntity {
 
     @Field(() => Boolean, { defaultValue: true })
     isActive: boolean;
+
+    @Field(() => String, { nullable: true })
+    status: string;
 }
 
 @InputType()
