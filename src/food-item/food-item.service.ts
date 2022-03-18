@@ -46,7 +46,12 @@ export class FoodItemService {
             where: filter,
             include: {
                 location: true
-            }
+            },
+            orderBy: [
+                { createdAt: 'desc' },
+                { status: 'desc' }
+            ]
+
 
         })
         return { items, total };
@@ -68,7 +73,7 @@ export class FoodItemService {
     update(id: string, updateFoodItemInput: UpdateFoodItemInput) {
         delete updateFoodItemInput?.id;
         for (const key in updateFoodItemInput) {
-            if (!updateFoodItemInput[key]) {
+            if ((typeof updateFoodItemInput[key] !== 'boolean') && !updateFoodItemInput[key]) {
                 delete updateFoodItemInput[key];
             }
         }
