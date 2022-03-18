@@ -16,6 +16,7 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { TasksService } from './tasks/tasks.service';
 import { TasksModule } from './tasks/tasks.module';
 import { NotificationModule } from './notification/notification.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
 
 
 @Module({
@@ -35,6 +36,16 @@ import { NotificationModule } from './notification/notification.module';
         ScheduleModule.forRoot(),
         TasksModule,
         NotificationModule,
+        ServeStaticModule.forRoot({
+            rootPath: './public',
+            exclude: ['/graphql', '/auth/*'],
+            serveRoot: '/',
+            serveStaticOptions: {
+                dotfiles: 'allow',
+                extensions: ['*']
+            }
+
+        })
 
     ],
     controllers: [AppController],
