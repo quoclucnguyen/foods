@@ -25,7 +25,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
         GraphQLModule.forRoot<ApolloDriverConfig>({
             driver: ApolloDriver,
             autoSchemaFile: true,
-            playground: false,
+            playground: true,
             debug: true,
             plugins: [ApolloServerPluginLandingPageLocalDefault()],
         }),

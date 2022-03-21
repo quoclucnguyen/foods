@@ -15,7 +15,8 @@ import { RolesGuard } from './roles.guard';
     JwtModule.register({
       secret: "SECRET_KEY_IN_HERE_WILL_BE_REPEATED_IN_PRODUCTION_WITH_CONFIG_SERVICE",
       signOptions: { expiresIn: '7day' },
-    })],
+    })
+  ],
   providers: [
     AuthService,
     LocalStrategy,
