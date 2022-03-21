@@ -27,7 +27,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
             autoSchemaFile: true,
             playground: true,
             debug: true,
-            plugins: [ApolloServerPluginLandingPageLocalDefault()],
+            // plugins: [ApolloServerPluginLandingPageLocalDefault()],
         }),
         UserModule,
         AuthModule,
