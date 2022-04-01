@@ -41,3 +41,12 @@ export abstract class QueryResult {
     @Field(() => [AbstractEntity])
     items: AbstractEntity[];
 }
+
+@InputType()
+export abstract class AbstractFilter {
+    @Field(() => String, { nullable: true })
+    status?: string;
+
+    @Field(() => Boolean, { nullable: true })
+    isActive?: boolean;
+}

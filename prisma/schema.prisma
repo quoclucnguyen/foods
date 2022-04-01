@@ -20,6 +20,7 @@ model User {
   role          Role           @default(USER)
   accessToken   String?        @unique @default("")
   isActive      Boolean        @default(true)
+  deviceId      String?
   createdAt     DateTime       @default(now())
   updatedAt     DateTime?      @updatedAt
   createdBy     String?
@@ -32,24 +33,29 @@ enum Role {
   USER
 }
 
-enum Status {
+enum FoodItemStatus {
   NEW
   EATEN
 }
 
+enum NotificationStatus {
+  NEW
+  READ
+}
+
 model Notification {
-  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  id         String             @id @default(auto()) @map("_id") @db.ObjectId
   userId     String
   title      String
   message    String
-  isActive   Boolean   @default(true)
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime? @updatedAt
+  isActive   Boolean            @default(true)
+  createdAt  DateTime           @default(now())
+  updatedAt  DateTime?          @updatedAt
   createdBy  String?
   updatedBy  String?
   foodItemId String?
-
-  user User @relation(fields: [userId], references: [id])
+  status     NotificationStatus @default(NEW)
+  user       User               @relation(fields: [userId], references: [id])
 }
 
 model Location {
@@ -64,19 +70,19 @@ model Location {
 }
 
 model FoodItem {
-  id                 String    @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt          DateTime  @default(now())
-  updatedAt          DateTime? @updatedAt
+  id                 String          @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt          DateTime        @default(now())
+  updatedAt          DateTime?       @updatedAt
   createdBy          String?
   updatedBy          String?
-  isActive           Boolean   @default(true)
-  status             Status?   @default(NEW)
+  isActive           Boolean         @default(true)
+  status             FoodItemStatus? @default(NEW)
   name               String
   locationId         String
   dateEnd            DateTime?
   duration           Int?
-  location           Location  @relation(fields: [locationId], references: [id])
-  isSendNotification Boolean   @default(false)
+  location           Location        @relation(fields: [locationId], references: [id])
+  isSendNotification Boolean         @default(false)
 }
 
 model FoodItemNotification {

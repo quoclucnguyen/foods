@@ -1,6 +1,6 @@
 import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 import { NotificationService } from './notification.service';
-import { Notification } from './entities/notification.entity';
+import { Notification, NotificationPagination } from './entities/notification.entity';
 import { CreateNotificationInput } from './dto/create-notification.input';
 import { UpdateNotificationInput } from './dto/update-notification.input';
 import { GqlAuthGuard } from 'src/auth/gql-auth.guard';
@@ -25,8 +25,12 @@ export class NotificationResolver {
   }
 
   @Query(() => [Notification], { name: 'notifications' })
-  findAll() {
-    return this.notificationService.findAll();
+  @UseGuards(GqlAuthGuard)
+  findAll(
+    @Args('pagination', { nullable: true }) pagination: NotificationPagination = new NotificationPagination(),
+    @CurrentUser() user: UserLogin
+  ) {
+    return this.notificationService.findAll(pagination, user);
   }
 
   @Query(() => Notification, { name: 'notification' })

@@ -1,5 +1,5 @@
-import { ObjectType, Field, Int } from '@nestjs/graphql';
-import { AbstractEntity } from 'src/common/abstract.entity';
+import { ObjectType, Field, Int, InputType } from '@nestjs/graphql';
+import { AbstractEntity, AbstractFilter, Pagination } from 'src/common/abstract.entity';
 import { User } from 'src/user/entities/user.entity';
 
 @ObjectType()
@@ -12,4 +12,22 @@ export class Notification extends AbstractEntity {
 
   @Field(() => User)
   user?: string;
+}
+
+@InputType()
+export class NotificationFilter extends AbstractFilter {
+  @Field(() => String, { nullable: true })
+  title?: string;
+
+  @Field(() => String, { nullable: true })
+  message?: string;
+
+  @Field(() => String, { nullable: true })
+  user?: string;
+}
+
+@InputType()
+export class NotificationPagination extends Pagination {
+  @Field(() => NotificationFilter, { nullable: true })
+  where?: NotificationFilter;
 }
