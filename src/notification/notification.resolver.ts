@@ -1,6 +1,6 @@
 import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 import { NotificationService } from './notification.service';
-import { Notification, NotificationPagination } from './entities/notification.entity';
+import { Notification, NotificationPagination, NotificationQueryResult } from './entities/notification.entity';
 import { CreateNotificationInput } from './dto/create-notification.input';
 import { UpdateNotificationInput } from './dto/update-notification.input';
 import { GqlAuthGuard } from 'src/auth/gql-auth.guard';
@@ -24,7 +24,7 @@ export class NotificationResolver {
     return this.notificationService.create(createNotificationInput);
   }
 
-  @Query(() => [Notification], { name: 'notifications' })
+  @Query(() => NotificationQueryResult, { name: 'notifications' })
   @UseGuards(GqlAuthGuard)
   findAll(
     @Args('pagination', { nullable: true }) pagination: NotificationPagination = new NotificationPagination(),
@@ -39,12 +39,18 @@ export class NotificationResolver {
   }
 
   @Mutation(() => Notification)
-  updateNotification(@Args('updateNotificationInput') updateNotificationInput: UpdateNotificationInput) {
-    return this.notificationService.update(updateNotificationInput.id, updateNotificationInput);
+  async updateNotification(@Args('updateNotificationInput') updateNotificationInput: UpdateNotificationInput) {
+    return await this.notificationService.update(updateNotificationInput.id, updateNotificationInput);
   }
 
   @Mutation(() => Notification)
   removeNotification(@Args('id', { type: () => Int }) id: number) {
     return this.notificationService.remove(id);
+  }
+
+  @Query(() => Boolean)
+  @UseGuards(GqlAuthGuard)
+  isHasUnreadNotification(@CurrentUser() user: UserLogin) {
+    return this.notificationService.isHasUnreadNotification(user);
   }
 }

@@ -7,8 +7,10 @@ import { NotificationPagination } from './entities/notification.entity';
 import * as admin from 'firebase-admin';
 import { Message } from 'firebase-admin/lib/messaging/messaging-api';
 import { UserService } from 'src/user/user.service';
+import { NotificationStatus } from '@prisma/client';
 @Injectable()
 export class NotificationService {
+
   private logger = new Logger('NotificationService');
   constructor(
     readonly prismaAppService: PrismaAppService,
@@ -41,30 +43,54 @@ export class NotificationService {
     })
   }
 
-  findAll(pagination: NotificationPagination, user: UserLogin) {
+  async findAll(pagination: NotificationPagination, user: UserLogin) {
+    const filter = {
+      isActive: true,
+      userId: user.id
+    }
+    const total = this.prismaAppService.prismaService.notification.count({
+      where: filter
+    })
 
-    return this.prismaAppService.prismaService.notification.findMany({
-      where: {
-        isActive: true,
-        userId: user.id
-      },
+    const items = await this.prismaAppService.prismaService.notification.findMany({
+      where: filter,
       include: {
         user: true
       },
       take: pagination.take,
       skip: pagination.skip,
     });
+    return { total, items }
+
   }
 
   findOne(id: number) {
     return `This action returns a #${id} notification`;
   }
 
-  update(id: number, updateNotificationInput: UpdateNotificationInput) {
-    return `This action updates a #${id} notification`;
+  async update(id: string, updateNotificationInput: UpdateNotificationInput) {
+    return await this.prismaAppService.prismaService.notification.update({
+      where: {
+        id: id
+      },
+      data: {
+        status: updateNotificationInput.status
+      }
+    })
   }
 
   remove(id: number) {
     return `This action removes a #${id} notification`;
+  }
+  async isHasUnreadNotification(user: UserLogin) {
+    const count = await this.prismaAppService.prismaService.notification.count({
+      where: {
+        isActive: true,
+        userId: user.id,
+        status: NotificationStatus.NEW
+      }
+    })
+    return count > 0;
+
   }
 }

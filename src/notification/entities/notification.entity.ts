@@ -1,5 +1,5 @@
 import { ObjectType, Field, Int, InputType } from '@nestjs/graphql';
-import { AbstractEntity, AbstractFilter, Pagination } from 'src/common/abstract.entity';
+import { AbstractEntity, AbstractFilter, Pagination, QueryResult } from 'src/common/abstract.entity';
 import { User } from 'src/user/entities/user.entity';
 
 @ObjectType()
@@ -30,4 +30,10 @@ export class NotificationFilter extends AbstractFilter {
 export class NotificationPagination extends Pagination {
   @Field(() => NotificationFilter, { nullable: true })
   where?: NotificationFilter;
+}
+
+@ObjectType()
+export class NotificationQueryResult extends QueryResult {
+  @Field(() => [Notification])
+  items: Notification[];
 }
