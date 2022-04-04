@@ -83,6 +83,7 @@ model FoodItem {
   duration           Int?
   location           Location        @relation(fields: [locationId], references: [id])
   isSendNotification Boolean         @default(false)
+  qty                String?
 }
 
 model FoodItemNotification {

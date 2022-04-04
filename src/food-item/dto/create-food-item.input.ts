@@ -12,4 +12,7 @@ export class CreateFoodItemInput extends AbstractInput {
   @Field(() => Date, { nullable: true })
   dateEnd?: Date
 
+  @Field(() => String, { nullable: true })
+  qty?: String;
+
 }
