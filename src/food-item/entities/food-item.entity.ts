@@ -29,6 +29,9 @@ export class FoodItem extends AbstractEntity {
 
   @Field(() => String, { nullable: true, middleware: [dateToLocalStringMiddleware] })
   dateEndInLocalString: string;
+
+  @Field(() => String, { nullable: true })
+  qty?: string;
 }
 
 @InputType()
